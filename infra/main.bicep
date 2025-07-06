@@ -28,8 +28,7 @@ param adminPassword string
   '2022-Datacenter-with-Containers-smalldisk'
 ])
 param windowsOSVersion string = '2022-Datacenter'
-@description('Specifies the unique DNS Name for the Public IP used to access the Virtual Machine.')
-param dnsLabelPrefix string
+
 
 @description('Virtual machine size.')
 param vmSize string = 'Standard_D4lds_v5'
@@ -37,11 +36,10 @@ param vmSize string = 'Standard_D4lds_v5'
 var storageAccountName = '${environmentName}store'
 var networkInterfaceName = '${environmentName}-nic'
 var vNetAddressPrefix = '10.0.0.0/16'
-var vNetSubnetName = 'default'
 var vNetSubnetAddressPrefix = '10.0.0.0/24'
-var publicIPAddressName = '${environmentName}-ip'
-var vmName = 'winvm'
+var vmName = 'azbackupwinvm'
 var vNetName = '${environmentName}-vnet'
+var vNetSubnetName = '${environmentName}-subnet'
 var vaultName = '${environmentName}-vault'
 var backupFabric = 'Azure'
 var backupPolicyName = 'EnhancedPolicy'
@@ -86,11 +84,11 @@ module publicIPAddress './public-ip-address.bicep' = {
   name: 'publicIPAddress'
   scope: rg
   params: {
-    publicIPAddressName: 'piplab${resourceToken}'
+    publicIPAddressName: 'azvmbackup-pip${resourceToken}'
     location: location
     tags: tags
     environmentName: environmentName
-    dnsLabelPrefix: 'piplab${resourceToken}'
+    dnsLabelPrefix: 'azvmbackup${resourceToken}'
 
   }
 }
@@ -110,7 +108,7 @@ module virtualNetwork './virtual-network.bicep' = {
   name: 'virtualNetwork'
   scope: rg
   params: {
-    vNetName: 'vnetlab${resourceToken}'
+    vNetName: vNetName
     location: location
     tags: tags
     environmentName: environmentName
@@ -131,7 +129,7 @@ module networkInterface './network-interface.bicep' = {
     tags: tags
     environmentName: environmentName
     vNet: virtualNetwork.outputs.vNet
-    vNetSubnetName: 'subnetlab${resourceToken}'
+    vNetSubnetName: vNetSubnetName
     publicIPAddressId: publicIPAddress.outputs.publicIPAddressId
   }
 }
@@ -157,7 +155,7 @@ module recoveryServicesVault './recovery-services-vault.bicep' = {
   name: 'recoveryServicesVault'
   scope: rg
   params: {
-    vaultName: 'rsvlab${resourceToken}'
+    vaultName: vaultName
     location: location
     tags: tags
     environmentName: environmentName
