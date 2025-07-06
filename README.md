@@ -1,6 +1,8 @@
-# AZD Trainer-Demo-Deploy Starter template
+# AZD-based Azure VM Backup template
 
-This template could be used as a starting point for creating your own AZD-compatible templates, which you will contribute to [Trainer-Demo-Deploy](https://aka.ms/trainer-demo-deploy). 
+This template can be used as a demo scenario for Azure Backup to showcase a Windows VM backup protection. It deploys all necessary resources such as Azure Recovery Services Vault, a Windows Server 2022 Virtual Machine and the necessary backup job. 
+
+This scenario is part of the larger Azure Training Demo Scenario Catalog at [Trainer-Demo-Deploy](https://aka.ms/trainer-demo-deploy). 
 
 ## ⬇️ Installation
 - [Azure Developer CLI - AZD](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd)
@@ -13,32 +15,29 @@ This template could be used as a starting point for creating your own AZD-compat
 
 1. Create a new folder on your machine.
 ```
-mkdir tdd-azd-starter
+mkdir tdd-azd-vmbackup
 ```
 2. Next, navigate to the new folder.
 ```
-cd tdd-azd-starter
+cd tdd-azd-vmbackup
 ```
 3. Next, run `azd init` to initialize the deployment.
 ```
-azd init -t petender/tdd-azd-starter
+azd init -t petender/tdd-azd-vmbackup
 ```
-4. Copy the starter template into its own directory and modify the template.
+4. This clones all scenario artifacts into the new folder.
+
+5. Run the actual deployment by using `azd up`
 ```
-Update the main.bicep and resources.bicep with your own resource information
+azd up
 ```
-5. Update the azure.yaml metadata
+6. Provide the necessary input parameters (environment name, VM admin credentials,...)
+
+7. Clean up the resources when no longer needed using `azd down`
 ```
-Update the name and metadata.template parameters in the azure.yaml, with your preferred scenario name, e.g. tdd-azd-trafficmgr
+azd down --force --purge
 ```
 
-## 🚀 Push the scenario to your own GitHub:
-
-1. Sync the new scenario you created into your own GitHub account into a public repo, using the same name as what you specified in the azure.yaml
-
-2. Once available, add the necessary "additional demo scenario artifacts" (demoguide.md, demoguide screenshots, scenario architecture diagram,...) 
-
-3. With all template details and demo artifacts available in the repo, follow the steps on how to [Contribute](https://microsoftlearning.github.io/trainer-demo-deploy/docs/contribute) to Trainer-Demo-Deploy, to get your scenario published into the catalog.
-
+Use the [GitHub Issues](https://github.com/petender/azd-vmbackup/issues) from this repo to provide your feedback or suggestions, or reach out if you see any issues with the deployment. 
 
  
